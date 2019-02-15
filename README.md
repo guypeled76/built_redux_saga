@@ -14,7 +14,7 @@ import 'dart:io';
 main() async {
 
 
-  SagaManager manager = SagaManager(test());
+  SagaManager manager = SagaManager([test(), delayTest()]);
 
 
   print("run");
@@ -34,9 +34,20 @@ main() async {
 
 }
 
+Iterable<Runnable> delayTest() sync* {
+  //while(true) {
+  print("before delay test");
+  yield delay(Duration(seconds: 5));
+  print("after1 delay test");
+  yield delay(Duration(seconds: 5));
+  print("after2 delay test");
+  //}
+}
+
+
 Iterable<Runnable> test() sync* {
   print("in test");
-  yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
+  yield fork([error1(test1(), "cp1"), error1(test2(), "cp2")]);
   print("out test");
 }
 
@@ -96,6 +107,7 @@ Iterable<Runnable> test2() sync* {
 Future<String> getSomething() {
   return Future.delayed(Duration(seconds: 2), () => "This is a delayed API response");
 }
+
 ```
 
 ## Features and bugs
