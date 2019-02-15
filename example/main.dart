@@ -5,12 +5,12 @@ main() {
 
   SagaManager manager = SagaManager(test());
 
-  manager.run();
+  print("run:${manager.run()}");
 
 }
 
 Iterable<Runnable> test() sync* {
-  yield all([error1(test1()), test2()]);
+  yield fork([error1(test1()), test2()]);
 }
 
 
