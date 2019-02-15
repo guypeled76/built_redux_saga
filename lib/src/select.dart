@@ -7,6 +7,7 @@ class _Select<SelectorType, ValueType> extends Runnable {
 
   @override
   RunnableStatus run(SagaManager sagaManager) {
+    this.callback(sagaManager.select<SelectorType, ValueType>(this.selector));
     return RunnableStatus.Done;
   }
 

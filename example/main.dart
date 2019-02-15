@@ -3,9 +3,9 @@ import 'package:redux_saga/redux_saga.dart';
 main() {
 
 
-  SagaManager manager = SagaManager();
+  SagaManager manager = SagaManager(test());
 
-  manager.run(test());
+  manager.run();
 
 }
 

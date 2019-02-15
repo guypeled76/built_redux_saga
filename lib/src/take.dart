@@ -11,6 +11,12 @@ class _Take<Selector, ActionType> extends Runnable {
 
   @override
   RunnableStatus run(SagaManager sagaManager) {
-    return null;
+    ActionType action = sagaManager.take<Selector, ActionType>(selector);
+    if(action != null) {
+      this.callback(action);
+      return RunnableStatus.Done;
+    } else {
+      return RunnableStatus.Waiting;
+    }
   }
 }
