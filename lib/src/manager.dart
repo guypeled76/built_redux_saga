@@ -18,12 +18,12 @@ class SagaManager {
 
   ValueType select<SelectorType, ValueType>(SelectorType selector) {
     print("selecting:${selector}");
-    return null;
+    return selector as ValueType;
   }
 
   ValueType take<SelectorType, ValueType>(SelectorType selector) {
     print("take:${selector}");
-    return null;
+    return selector as ValueType;
   }
 
 }

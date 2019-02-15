@@ -53,5 +53,5 @@ Iterable<Runnable> test2() sync* {
 }
 
 Future<String> getSomething() {
-  return Future.value("This is a test");
+  return Future.delayed(Duration(seconds: 2), () => "This is a test");
 }
