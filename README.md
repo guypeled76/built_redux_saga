@@ -18,12 +18,14 @@ main() async {
 
 
   print("run");
+  manager.run();
+
   while(true) {
-    RunnableStatus status = manager.run();
 
-    print("run:${status}");
 
-    if(status != RunnableStatus.Done) {
+    print("run:${manager.status}");
+
+    if(manager.status != RunnableStatus.Done) {
       await Future.delayed(Duration(seconds: 1));
     } else {
       break;
@@ -107,7 +109,6 @@ Iterable<Runnable> test2() sync* {
 Future<String> getSomething() {
   return Future.delayed(Duration(seconds: 2), () => "This is a delayed API response");
 }
-
 ```
 
 ## Features and bugs
