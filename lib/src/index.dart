@@ -7,4 +7,3 @@ export 'manager.dart';
 export 'task.dart';
 export 'fork.dart';
 export 'runnable.dart';
-export 'parallel.dart';

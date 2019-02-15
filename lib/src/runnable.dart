@@ -4,7 +4,7 @@ abstract class Runnable {
   RunnableStatus run(SagaManager sagaManager);
 
   static Iterator<Runnable> createTasksFromList(List<Iterable<Runnable>> runnableList) {
-    return runnableList.map((runnable) => Task(runnable.iterator)).toList().iterator;
+    return runnableList.map((runnable) => Task(runnable.iterator, false)).toList().iterator;
   }
 }
 

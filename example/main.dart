@@ -26,7 +26,7 @@ main() async {
 
 Iterable<Runnable> test() sync* {
   print("in test");
-  yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
+  yield fork([error1(test1(), "cp1"), error1(test2(), "cp2")]);
   print("out test");
 }
 

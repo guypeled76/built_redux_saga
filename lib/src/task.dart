@@ -1,11 +1,13 @@
 import 'package:redux_saga/redux_saga.dart';
 
 class Task extends Runnable {
-  final Iterator<Runnable> _runnables;
+  Iterator<Runnable> _runnables;
+
+  bool _parallel;
 
   Runnable _last;
 
-  Task(this._runnables);
+  Task(this._runnables, this._parallel);
 
   @override
   RunnableStatus run(SagaManager sagaManager) {
@@ -15,6 +17,8 @@ class Task extends Runnable {
 
     RunnableStatus status = RunnableStatus.Done;
 
+    var residuals = <Runnable>[];
+
     while (_last != null) {
       RunnableStatus currentStatus = _last.run(sagaManager);
       switch (currentStatus) {
@@ -22,8 +26,9 @@ class Task extends Runnable {
           _last = _next();
           break;
         case RunnableStatus.Waiting:
-          if(this.parallel) {
+          if(this._parallel) {
             status = RunnableStatus.Waiting;
+            residuals.add(_last);
             _last = _next();
           } else {
             return RunnableStatus.Waiting;
@@ -31,11 +36,11 @@ class Task extends Runnable {
       }
     }
 
-    return status;
-  }
+    if(this._parallel) {
+      _runnables = residuals.iterator;
+    }
 
-  bool get parallel {
-    return false;
+    return status;
   }
 
   Runnable _next() {
@@ -49,5 +54,6 @@ class Task extends Runnable {
     }
   }
 }
+
 
 
