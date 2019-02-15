@@ -4,8 +4,8 @@ class SagaManager {
 
   final Task _main;
 
-  SagaManager(Iterable<Runnable> runnables) :
-    _main = Task(runnables.iterator, false);
+  SagaManager(List<Iterable<Runnable>> runnableList) :
+    _main = Task(Runnable.createTasksFromList(runnableList), false);
 
 
   RunnableStatus run() {

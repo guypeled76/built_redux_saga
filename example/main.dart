@@ -4,7 +4,7 @@ import 'dart:io';
 main() async {
 
 
-  SagaManager manager = SagaManager(test());
+  SagaManager manager = SagaManager([test(), delayTest()]);
 
 
   print("run");
@@ -23,6 +23,17 @@ main() async {
   print("Done.");
 
 }
+
+Iterable<Runnable> delayTest() sync* {
+  //while(true) {
+  print("before delay test");
+  yield delay(Duration(seconds: 5));
+  print("after1 delay test");
+  yield delay(Duration(seconds: 5));
+  print("after2 delay test");
+  //}
+}
+
 
 Iterable<Runnable> test() sync* {
   print("in test");

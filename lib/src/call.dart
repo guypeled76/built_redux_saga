@@ -1,22 +1,22 @@
 import 'package:redux_saga/redux_saga.dart';
 
 class _Call<ValueType> extends Runnable {
-  final Future<ValueType> future;
-  final RunnableCallback<ValueType> success;
-  final RunnableCallback<ValueType> error;
+  final Future<ValueType> _future;
+  final RunnableCallback<ValueType> _success;
+  final RunnableCallback<ValueType> _error;
   
   RunnableStatus _status = RunnableStatus.Waiting;
 
-  _Call(this.future, [this.success, this.error]) {
-    this.future.then((value) {
+  _Call(this._future, [this._success, this._error]) {
+    this._future.then((value) {
       this._status = RunnableStatus.Done;
-      if(this.success != null) {
-        this.success(value);
+      if(this._success != null) {
+        this._success(value);
       }
     }).catchError((error) {
       this._status = RunnableStatus.Done;
-      if(this.error != null) {
-        this.error(error);
+      if(this._error != null) {
+        this._error(error);
       }
     });
   }
@@ -25,11 +25,10 @@ class _Call<ValueType> extends Runnable {
   RunnableStatus run(SagaManager sagaManager) {
     return this._status;
   }
-
 }
 
 
 
-Runnable call<ValueType>(Future<ValueType> future, [RunnableCallback<ValueType> callback]) {
-  return _Call(future, callback);
+Runnable call<ValueType>(Future<ValueType> future, [RunnableCallback<ValueType> callback, RunnableCallback<ValueType> error]) {
+  return _Call(future, callback, error);
 }
