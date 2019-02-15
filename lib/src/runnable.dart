@@ -8,6 +8,28 @@ abstract class Runnable {
   }
 }
 
+abstract class RunnableFuture extends Runnable {
+
+  RunnableStatus _status = RunnableStatus.Waiting;
+
+  SagaManager _sagaManager;
+
+
+  void done() {
+    _status = RunnableStatus.Done;
+    if(_sagaManager != null) {
+      _sagaManager.run();
+    }
+  }
+
+  @override
+  RunnableStatus run(SagaManager sagaManager) {
+    _sagaManager = sagaManager;
+    return this._status;
+  }
+
+}
+
 enum RunnableStatus {
   Waiting,
   Done

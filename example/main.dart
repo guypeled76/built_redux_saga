@@ -8,12 +8,14 @@ main() async {
 
 
   print("run");
+  manager.run();
+
   while(true) {
-    RunnableStatus status = manager.run();
 
-    print("run:${status}");
 
-    if(status != RunnableStatus.Done) {
+    print("run:${manager.status}");
+
+    if(manager.status != RunnableStatus.Done) {
       await Future.delayed(Duration(seconds: 1));
     } else {
       break;

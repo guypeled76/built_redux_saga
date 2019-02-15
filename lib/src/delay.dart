@@ -1,21 +1,15 @@
 import 'package:redux_saga/redux_saga.dart';
 
-class _Delay<ValueType> extends Runnable {
+class _Delay<ValueType> extends RunnableFuture {
   final Future<ValueType> _future;
 
-  RunnableStatus _status = RunnableStatus.Waiting;
 
   _Delay(this._future) {
     this._future.then((value) {
-      this._status = RunnableStatus.Done;
+      this.done();
     }).catchError((error) {
-      this._status = RunnableStatus.Done;
+      this.done();
     });
-  }
-
-  @override
-  RunnableStatus run(SagaManager sagaManager) {
-    return this._status;
   }
 
 }
