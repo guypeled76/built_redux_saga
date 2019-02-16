@@ -1,41 +1,21 @@
 import 'package:redux_saga/redux_saga.dart';
-import 'dart:collection';
+import 'process.dart';
 
 class SagaManager {
 
-  final Task _main;
-
-  final Queue<_process> _processes = new Queue();
-
-  bool _running = false;
-
-  RunnableStatus _status = RunnableStatus.Done;
+  final ProcessTask _process;
 
   SagaManager(List<Iterable<Runnable>> runnableList) :
-    _main = Task(Runnable.createTasksFromList(runnableList), false) {
+    _process = ProcessTask(Runnable.createTasksFromList(runnableList)) {
   }
 
 
   RunnableStatus run() {
-    _processes.add(() => _main.run(this));
-
-    if(!_running) {
-      try {
-        _running = true;
-
-        while (_processes.isNotEmpty) {
-          _status = RunnableStatus.Waiting;
-          _status = _processes.removeFirst()();
-        }
-      } finally {
-        _running = false;
-      }
-    }
-    return _status;
+    return this._process.run(this);
   }
 
   RunnableStatus get status {
-    return this._status;
+    return this._process.status;
   }
 
   void put<Action>(Action action) {
@@ -55,5 +35,3 @@ class SagaManager {
 
 
 }
-
-typedef RunnableStatus _process();
