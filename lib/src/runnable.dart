@@ -8,15 +8,31 @@ abstract class Runnable {
   }
 }
 
-abstract class RunnableFuture extends Runnable {
+abstract class RunnableFuture<ValueType> extends Runnable {
+
+  final RunnableCallback<ValueType> _success;
+  final RunnableCallback<ValueType> _error;
 
   RunnableStatus _status = RunnableStatus.Waiting;
-
   SagaManager _sagaManager;
 
+  RunnableFuture(this._success, this._error);
 
-  void done() {
+  void successHandler(ValueType value) {
+    if(this._success != null) {
+      this._success(value);
+    }
     _status = RunnableStatus.Done;
+    if(_sagaManager != null) {
+      _sagaManager.run();
+    }
+  }
+
+  void errorHandler(error) {
+    if(this._error != null) {
+      this._error(error);
+    }
+    _status = RunnableStatus.Failed;
     if(_sagaManager != null) {
       _sagaManager.run();
     }
@@ -24,13 +40,22 @@ abstract class RunnableFuture extends Runnable {
 
   @override
   RunnableStatus run(SagaManager sagaManager) {
-    _sagaManager = sagaManager;
+    if(_sagaManager == null) {
+      _sagaManager = sagaManager;
+      initHandler(sagaManager);
+    }
     return this._status;
+  }
+
+  void initHandler(SagaManager sagaManager) {
+
   }
 
 }
 
 enum RunnableStatus {
+  Failed,
+  Canceled,
   Waiting,
   Done
 }

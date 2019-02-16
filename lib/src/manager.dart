@@ -47,7 +47,7 @@ class SagaManager {
     return selector as ValueType;
   }
 
-  ValueType take<SelectorType, ValueType>(SelectorType selector) {
+  Future<ValueType> take<SelectorType, ValueType>(SelectorType selector) async {
     print("take:${selector}");
     return selector as ValueType;
   }

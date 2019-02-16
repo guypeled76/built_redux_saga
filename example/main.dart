@@ -39,7 +39,7 @@ Iterable<Runnable> delayTest() sync* {
 
 Iterable<Runnable> test() sync* {
   print("in test");
-  yield fork([error1(test1(), "cp1"), error1(test2(), "cp2")]);
+  yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
   print("out test");
 }
 
@@ -70,7 +70,6 @@ Iterable<Runnable> test1() sync* {
       String v;
       yield call(getSomething(), (value) => v = value);
       yield put(v);
-
     } catch (e) {
       yield put(e);
     }

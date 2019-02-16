@@ -1,24 +1,16 @@
 import 'package:redux_saga/redux_saga.dart';
 
-Runnable take<Selector, ActionType>(Selector selector, [RunnableCallback<ActionType> callback]) {
-  return _Take(selector, callback);
+Runnable take<Selector, ActionType>(Selector selector, [RunnableCallback<ActionType> success, RunnableCallback error]) {
+  return _Take(selector, success, error);
 }
 
-class _Take<Selector, ActionType> extends Runnable {
+class _Take<Selector, ActionType> extends RunnableFuture<ActionType> {
   final Selector selector;
-  final RunnableCallback<ActionType> callback;
-  _Take(this.selector, this.callback);
+  _Take(this.selector, RunnableCallback<ActionType> success, RunnableCallback error) : super(success, error);
 
   @override
-  RunnableStatus run(SagaManager sagaManager) {
-    ActionType action = sagaManager.take<Selector, ActionType>(selector);
-    if(action != null) {
-      if(this.callback != null) {
-        this.callback(action);
-      }
-      return RunnableStatus.Done;
-    } else {
-      return RunnableStatus.Waiting;
-    }
+  void initHandler(SagaManager sagaManager) {
+    super.initHandler(sagaManager);
+    sagaManager.take(selector).then(this.successHandler).catchError(this.errorHandler);
   }
 }

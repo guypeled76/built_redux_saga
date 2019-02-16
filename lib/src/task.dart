@@ -25,6 +25,20 @@ class Task extends Runnable {
         case RunnableStatus.Done:
           _last = _next();
           break;
+        case RunnableStatus.Canceled:
+          if(this._parallel) {
+            _last = _next();
+          } else {
+            return RunnableStatus.Canceled;
+          }
+          break;
+        case RunnableStatus.Failed:
+          if(this._parallel) {
+            _last = _next();
+          } else {
+            return RunnableStatus.Failed;
+          }
+          break;
         case RunnableStatus.Waiting:
           if(this._parallel) {
             status = RunnableStatus.Waiting;
