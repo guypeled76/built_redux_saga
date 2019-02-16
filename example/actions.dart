@@ -2,7 +2,7 @@ import 'package:built_redux/built_redux.dart';
 
 part 'actions.g.dart';
 
-abstract class AppAction extends ReduxActions {
+abstract class AppActions extends ReduxActions {
 
 
   ActionDispatcher<String> initialize;
@@ -13,6 +13,6 @@ abstract class AppAction extends ReduxActions {
 
 
 
-  AppAction._();
-  factory AppAction() => new _$AppAction();
+  AppActions._();
+  factory AppActions() => new _$AppActions();
 }

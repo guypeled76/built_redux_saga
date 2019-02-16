@@ -10,7 +10,7 @@ class _Take<PayloadType> extends RunnableFuture<Action<PayloadType>> {
   _Take(this.selector, RunnableCallback<Action<PayloadType>> success, RunnableCallback error) : super(success, error);
 
   @override
-  void initHandler(SagaManager sagaManager) {
+  void initHandler(SagaMiddlewareManager sagaManager) {
     super.initHandler(sagaManager);
     sagaManager.take(selector).then(this.successHandler).catchError(this.errorHandler);
   }

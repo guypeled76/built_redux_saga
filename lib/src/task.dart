@@ -10,7 +10,7 @@ class Task extends Runnable {
   Task(this._runnables, this._parallel);
 
   @override
-  RunnableStatus run(SagaManager sagaManager) {
+  RunnableStatus run(SagaMiddlewareManager sagaManager) {
     if (_last == null) {
       _last = _next();
     }

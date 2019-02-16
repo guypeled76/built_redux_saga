@@ -1,51 +1,57 @@
 import 'package:redux_saga/redux_saga.dart';
 import 'package:built_redux/built_redux.dart';
 import 'actions.dart';
+import 'state.dart';
 
 main() async {
 
-
-  SagaManager manager = SagaManager([test(), delayTest()]);
-
-
-  print("run");
-  manager.run();
-
-  while(true) {
-
-
-    print("run:${manager.status}");
-
-    if(manager.status != RunnableStatus.Done) {
-      await Future.delayed(Duration(seconds: 1));
-      manager.actions.add(Action(AppActionNames.test2.name, "ff"));
-    } else {
-
-      break;
-    }
+  Reducer<AppState, AppStateBuilder, dynamic> createAppReducer() {
+    return (new ReducerBuilder<AppState, AppStateBuilder>()
+    ).build();
   }
 
-  print("Done.");
+
+  Store<AppState, AppStateBuilder, AppActions> store = new Store(
+      createAppReducer(), // build returns a reducer function
+      new AppState(),
+      new AppActions(),
+      middleware:
+      <Middleware<AppState, AppStateBuilder, AppActions>>[
+        createSagaMiddleware<AppState, AppStateBuilder, AppActions>([]
+          ..add(test())
+          ..add(delayTest())
+        ),
+      ]
+  );
+
+  while(true) {
+    await Future.delayed(Duration(seconds: 1));
+    store.actions.test2("This is a test");
+  }
+
 
 }
 
 Iterable<Runnable> delayTest() sync* {
+  while (true) {
+    Action<String> action;
+    yield take(AppActionsNames.test2, (v) => action = v);
 
-  Action<String> action;
-  yield take(AppActionNames.test2, (v) => action = v);
-  //while(true) {
-  print("before delay test");
-  yield delay(Duration(seconds: 5));
-  print("after1 delay test");
-  yield delay(Duration(seconds: 5));
-  print("after2 delay test");
-  //}
+    print("taken ${action}");
+
+    //while(true) {
+    print("before delay test");
+    yield delay(Duration(seconds: 1));
+    print("after1 delay test");
+    yield delay(Duration(seconds: 1));
+    print("after2 delay test");
+  }
 }
 
 
 Iterable<Runnable> test() sync* {
   Action<String> action;
-  yield take(AppActionNames.test2, (v) => action = v);
+  yield take(AppActionsNames.test2, (v) => action = v);
   print("in test");
   yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
   print("out test");
@@ -72,7 +78,7 @@ Iterable<Runnable> test1() sync* {
   //while(true) {
     try {
       Action<String> action;
-      yield take(AppActionNames.test2, (v) => action = v);
+      yield take(AppActionsNames.test2, (v) => action = v);
       yield put(action);
 
       String v;
@@ -89,7 +95,7 @@ Iterable<Runnable> test1() sync* {
 Iterable<Runnable> test2() sync* {
 
   print("in test2");
-  yield take(AppActionNames.test2);
+  yield take(AppActionsNames.test2);
   for(int i=0;i<4;i++) {
     yield put("iterator:${i}");
   }

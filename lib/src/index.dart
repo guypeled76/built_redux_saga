@@ -8,3 +8,4 @@ export 'task.dart';
 export 'fork.dart';
 export 'runnable.dart';
 export 'delay.dart';
+export 'middleware.dart';

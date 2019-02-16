@@ -14,7 +14,7 @@ class ProcessTask extends Task {
   ProcessTask(Iterator<Runnable> runnables) : super(runnables, true);
 
   @override
-  RunnableStatus run(SagaManager sagaManager) {
+  RunnableStatus run(SagaMiddlewareManager sagaManager) {
     _processes.add(() => super.run(sagaManager));
 
     if(!_running) {

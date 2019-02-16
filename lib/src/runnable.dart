@@ -1,7 +1,7 @@
 import 'package:redux_saga/redux_saga.dart';
 
 abstract class Runnable {
-  RunnableStatus run(SagaManager sagaManager);
+  RunnableStatus run(SagaMiddlewareManager sagaManager);
 
   static Iterator<Runnable> createTasksFromList(List<Iterable<Runnable>> runnableList) {
     return runnableList.map((runnable) => Task(runnable.iterator, false)).toList().iterator;
@@ -14,7 +14,7 @@ abstract class RunnableFuture<ValueType> extends Runnable {
   final RunnableCallback<ValueType> _error;
 
   RunnableStatus _status = RunnableStatus.Waiting;
-  SagaManager _sagaManager;
+  SagaMiddlewareManager _sagaManager;
 
   RunnableFuture(this._success, this._error);
 
@@ -41,7 +41,7 @@ abstract class RunnableFuture<ValueType> extends Runnable {
   }
 
   @override
-  RunnableStatus run(SagaManager sagaManager) {
+  RunnableStatus run(SagaMiddlewareManager sagaManager) {
     if(_sagaManager == null) {
       _sagaManager = sagaManager;
       initHandler(sagaManager);
@@ -49,7 +49,7 @@ abstract class RunnableFuture<ValueType> extends Runnable {
     return this._status;
   }
 
-  void initHandler(SagaManager sagaManager) {
+  void initHandler(SagaMiddlewareManager sagaManager) {
 
   }
 

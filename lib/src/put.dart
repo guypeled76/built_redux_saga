@@ -9,7 +9,7 @@ class _Put<Action> extends Runnable {
   _Put(this.action);
 
   @override
-  RunnableStatus run(SagaManager sagaManager) {
+  RunnableStatus run(SagaMiddlewareManager sagaManager) {
     sagaManager.put(this.action);
     return RunnableStatus.Done;
   }
