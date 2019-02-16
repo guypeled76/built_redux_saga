@@ -1,5 +1,6 @@
 import 'package:redux_saga/redux_saga.dart';
-import 'dart:io';
+import 'package:built_redux/built_redux.dart';
+import 'actions.dart';
 
 main() async {
 
@@ -17,7 +18,9 @@ main() async {
 
     if(manager.status != RunnableStatus.Done) {
       await Future.delayed(Duration(seconds: 1));
+      manager.actions.add(Action(AppActionNames.test2.name, "ff"));
     } else {
+
       break;
     }
   }
@@ -27,6 +30,9 @@ main() async {
 }
 
 Iterable<Runnable> delayTest() sync* {
+
+  Action<String> action;
+  yield take(AppActionNames.test2, (v) => action = v);
   //while(true) {
   print("before delay test");
   yield delay(Duration(seconds: 5));
@@ -38,6 +44,8 @@ Iterable<Runnable> delayTest() sync* {
 
 
 Iterable<Runnable> test() sync* {
+  Action<String> action;
+  yield take(AppActionNames.test2, (v) => action = v);
   print("in test");
   yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
   print("out test");
@@ -63,8 +71,8 @@ Iterable<Runnable> test1() sync* {
   print("in test1");
   //while(true) {
     try {
-      String action;
-      yield take("test", (v) => action = v);
+      Action<String> action;
+      yield take(AppActionNames.test2, (v) => action = v);
       yield put(action);
 
       String v;
@@ -81,7 +89,7 @@ Iterable<Runnable> test1() sync* {
 Iterable<Runnable> test2() sync* {
 
   print("in test2");
-  yield take("test");
+  yield take(AppActionNames.test2);
   for(int i=0;i<4;i++) {
     yield put("iterator:${i}");
   }

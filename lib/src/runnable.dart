@@ -31,6 +31,8 @@ abstract class RunnableFuture<ValueType> extends Runnable {
   void errorHandler(error) {
     if(this._error != null) {
       this._error(error);
+    } else {
+      throw new Exception(error);
     }
     _status = RunnableStatus.Failed;
     if(_sagaManager != null) {
