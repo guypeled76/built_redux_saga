@@ -7,7 +7,7 @@ Provides support for handling middleware effects using sagas.
 A simple usage example:
 
 ```dart
-import 'package:redux_saga/redux_saga.dart';
+import 'package:built_redux_saga/redux_saga.dart';
 import 'package:built_redux/built_redux.dart';
 import 'actions.dart';
 import 'state.dart';

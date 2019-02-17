@@ -1,4 +1,4 @@
-import 'package:redux_saga/redux_saga.dart';
+import 'package:built_redux_saga/built_redux_saga.dart';
 
 class _AllEffect extends Task {
   _AllEffect(Iterator<Runnable> runnables) : super(runnables, true);

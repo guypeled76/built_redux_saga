@@ -1,4 +1,4 @@
-import 'package:redux_saga/redux_saga.dart';
+import 'package:built_redux_saga/built_redux_saga.dart';
 import 'package:built_redux/built_redux.dart';
 
 Runnable take<PayloadType>(ActionName<PayloadType> actionName, [RunnableCallback<Action<PayloadType>> success, RunnableCallback error]) {

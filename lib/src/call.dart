@@ -1,4 +1,4 @@
-import 'package:redux_saga/redux_saga.dart';
+import 'package:built_redux_saga/built_redux_saga.dart';
 
 class _Call<ValueType> extends RunnableFuture {
   final Future<ValueType> _future;
