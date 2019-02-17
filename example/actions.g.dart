@@ -15,29 +15,39 @@ class _$AppActions extends AppActions {
 
   final ActionDispatcher<String> initialize =
       new ActionDispatcher<String>('AppActions-initialize');
-  final ActionDispatcher<String> test1 =
-      new ActionDispatcher<String>('AppActions-test1');
-  final ActionDispatcher<String> test2 =
-      new ActionDispatcher<String>('AppActions-test2');
-  final ActionDispatcher<String> test3 =
-      new ActionDispatcher<String>('AppActions-test3');
+  final ActionDispatcher<String> startTask =
+      new ActionDispatcher<String>('AppActions-startTask');
+  final ActionDispatcher<String> endTask =
+      new ActionDispatcher<String>('AppActions-endTask');
+  final ActionDispatcher<String> test =
+      new ActionDispatcher<String>('AppActions-test');
+  final ActionDispatcher<Object> error =
+      new ActionDispatcher<Object>('AppActions-error');
+  final ActionDispatcher<String> log =
+      new ActionDispatcher<String>('AppActions-log');
 
   @override
   void setDispatcher(Dispatcher dispatcher) {
     initialize.setDispatcher(dispatcher);
-    test1.setDispatcher(dispatcher);
-    test2.setDispatcher(dispatcher);
-    test3.setDispatcher(dispatcher);
+    startTask.setDispatcher(dispatcher);
+    endTask.setDispatcher(dispatcher);
+    test.setDispatcher(dispatcher);
+    error.setDispatcher(dispatcher);
+    log.setDispatcher(dispatcher);
   }
 }
 
 class AppActionsNames {
   static final ActionName<String> initialize =
       new ActionName<String>('AppActions-initialize');
-  static final ActionName<String> test1 =
-      new ActionName<String>('AppActions-test1');
-  static final ActionName<String> test2 =
-      new ActionName<String>('AppActions-test2');
-  static final ActionName<String> test3 =
-      new ActionName<String>('AppActions-test3');
+  static final ActionName<String> startTask =
+      new ActionName<String>('AppActions-startTask');
+  static final ActionName<String> endTask =
+      new ActionName<String>('AppActions-endTask');
+  static final ActionName<String> test =
+      new ActionName<String>('AppActions-test');
+  static final ActionName<Object> error =
+      new ActionName<Object>('AppActions-error');
+  static final ActionName<String> log =
+      new ActionName<String>('AppActions-log');
 }

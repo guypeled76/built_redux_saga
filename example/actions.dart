@@ -6,9 +6,12 @@ abstract class AppActions extends ReduxActions {
 
 
   ActionDispatcher<String> initialize;
-  ActionDispatcher<String> test1;
-  ActionDispatcher<String> test2;
-  ActionDispatcher<String> test3;
+  ActionDispatcher<String> startTask;
+  ActionDispatcher<String> endTask;
+  ActionDispatcher<String> test;
+  ActionDispatcher<Object> error;
+  ActionDispatcher<String> log;
+
 
 
 

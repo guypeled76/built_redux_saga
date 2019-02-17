@@ -34,6 +34,9 @@ class SagaMiddlewareManager {
 
   ActionHandler next(ActionHandler next) {
     return (Action<dynamic> action) {
+
+      print("sinked:${action}");
+
       _observable.sink.add(action);
 
       if (next != null) {
@@ -46,8 +49,8 @@ class SagaMiddlewareManager {
     return this._process.status;
   }
 
-  void put<Action>(Action action) {
-    print("putting:${action}");
+  void put<PayloadType>(ActionName<PayloadType> actionName, PayloadType payload) {
+    Action<PayloadType>(actionName.name, payload);
   }
 
   ValueType select<SelectorType, ValueType>(SelectorType selector) {
