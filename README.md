@@ -1,7 +1,6 @@
-A library for Dart developers.
+## Built Redux Saga implementation. 
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Provides support for handling middleware effects using sagas.
 
 ## Usage
 
@@ -44,7 +43,13 @@ main() async {
 }
 
 Iterable<Runnable> logSaga() sync* {
-
+  while (true) {
+    Action<String> action;
+    yield takeEverything((result) {
+      action = result;
+    });
+    print("log ${action}");
+  }
 }
 Iterable<Runnable> delaySaga() sync* {
   while (true) {
@@ -136,6 +141,7 @@ Iterable<Runnable> test2() sync* {
 Future<String> getSomething() {
   return Future.delayed(Duration(seconds: 2), () => "This is a delayed API response");
 }
+
 ```
 
 ## Features and bugs
