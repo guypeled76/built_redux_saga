@@ -28,28 +28,32 @@ main() async {
       middleware:
       <Middleware<AppState, AppStateBuilder, AppActions>>[
         createSagaMiddleware<AppState, AppStateBuilder, AppActions>([]
-          ..add(test())
-          ..add(delayTest())
+          ..add(testSaga())
+          ..add(delaySaga())
+          ..add(logSaga())
         ),
       ]
   );
 
   while(true) {
     await Future.delayed(Duration(seconds: 1));
-    store.actions.test2("This is a test");
+    store.actions.test("This is a test");
   }
 
 
 }
 
-Iterable<Runnable> delayTest() sync* {
+Iterable<Runnable> logSaga() sync* {
+
+}
+Iterable<Runnable> delaySaga() sync* {
   while (true) {
     Action<String> action;
-    yield take(AppActionsNames.test2, (v) => action = v);
-
+    yield take(AppActionsNames.test, (result) {
+      action = result;
+    });
     print("taken ${action}");
 
-    //while(true) {
     print("before delay test");
     yield delay(Duration(seconds: 1));
     print("after1 delay test");
@@ -59,64 +63,74 @@ Iterable<Runnable> delayTest() sync* {
 }
 
 
-Iterable<Runnable> test() sync* {
+Iterable<Runnable> testSaga() sync* {
   Action<String> action;
-  yield take(AppActionsNames.test2, (v) => action = v);
-  print("in test");
-  yield all([error1(test1(), "cp1"), error1(test2(), "cp2")]);
+  yield take(AppActionsNames.test, (result) {
+    action = result;
+  });
+  print("in test taken ${action}");
+  
+  yield all([reportedSaga(test1(), "test1 task"), reportedSaga(test2(), "test2 task")]);
+  
   print("out test");
 }
 
 
-Iterable<Runnable> error1(Iterable<Runnable> saga, String label) sync* {
+Iterable<Runnable> reportedSaga(Iterable<Runnable> saga, String label) sync* {
 
-  print("in error1");
+  print("start reported task ${label}");
   try {
-    yield put("before ${label}");
+    yield put(AppActionsNames.startTask, "before ${label}");
     yield* saga;
-    yield put("after ${label}");
+    yield put(AppActionsNames.endTask, "after ${label}");
   } catch(e) {
-    yield put(e);
+    yield put(AppActionsNames.error, e);
   }
 
-  print("out error1");
+  print("end reported task ${label}");
 }
 
 Iterable<Runnable> test1() sync* {
 
-  print("in test1");
-  //while(true) {
+  print("entering test1");
+
     try {
       Action<String> action;
-      yield take(AppActionsNames.test2, (v) => action = v);
-      yield put(action);
+      yield take(AppActionsNames.test, (result) { 
+        action = result;
+      });
+      yield put(AppActionsNames.log, "dispatching: ${action}");
 
-      String v;
-      yield call(getSomething(), (value) => v = value);
-      yield put(v);
+      String value;
+      yield call(getSomething(), (result) {
+        value = result;
+      });
+      yield put(AppActionsNames.log, "value: ${value}");
     } catch (e) {
-      yield put(e);
+      yield put(AppActionsNames.error, e);
     }
-  //}
 
-  print("out test1");
+
+  print("exiting test1");
 }
 
 Iterable<Runnable> test2() sync* {
 
-  print("in test2");
-  yield take(AppActionsNames.test2);
+  print("entering test2");
+  yield take(AppActionsNames.test);
   for(int i=0;i<4;i++) {
-    yield put("iterator:${i}");
+    yield put(AppActionsNames.log, "from_iterator:${i}");
   }
 
 
-  String ss;
-  yield select("dd", (v) => ss = v);
-  if(ss == null) {
-    yield put(ss);
+  String state;
+  yield select("state", (result) {
+    state = result;
+  });
+  if(state == null) {
+    yield put(AppActionsNames.log, "state: ${state}");
   }
-  print("out test2");
+  print("exiting test2");
 }
 
 Future<String> getSomething() {
