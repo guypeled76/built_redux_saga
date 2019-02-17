@@ -16,6 +16,10 @@ ActionsType extends ReduxActions> {
 
   Stream<Object> _actions;
 
+  ActionHandler _handler;
+
+  MiddlewareApi<StateType, StateBuilderType, ActionsType> _api;
+
   SagaMiddlewareManager(List<Iterable<Runnable>> runnableList)
       : _process = ProcessTask(Runnable.createTasksFromList(runnableList)) {
     _actions = _observable.stream.asBroadcastStream();
@@ -24,6 +28,7 @@ ActionsType extends ReduxActions> {
   void init(MiddlewareApi<StateType, StateBuilderType, ActionsType> api) {
     if(!_initialized) {
       _initialized = true;
+      this._api = api;
       this._process.run(this);
     }
   }
@@ -33,7 +38,7 @@ ActionsType extends ReduxActions> {
   }
 
   ActionHandler next(ActionHandler next) {
-    return (Action<dynamic> action) {
+    return _handler = (Action<dynamic> action) {
 
       print("sinked:${action}");
 
@@ -50,7 +55,7 @@ ActionsType extends ReduxActions> {
   }
 
   void put<PayloadType>(ActionName<PayloadType> actionName, PayloadType payload) {
-    Action<PayloadType>(actionName.name, payload);
+    _handler(Action<PayloadType>(actionName.name, payload));
   }
 
   ValueType select<SelectorType, ValueType>(SelectorType selector) {
