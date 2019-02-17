@@ -63,6 +63,12 @@ ActionsType extends ReduxActions> {
     return selector as ValueType;
   }
 
+  Future<Action<Object>> takeEverything() async {
+    return _actions
+        .where((action) => action is Action<Object>)
+        .map((action) => action as Action<Object>).first;
+  }
+
   Future<Action<PayloadType>> take<PayloadType>(
       ActionName<PayloadType> actionName) async {
     if (actionName != null) {

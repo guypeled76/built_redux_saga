@@ -15,3 +15,17 @@ class _Take<PayloadType> extends RunnableFuture<Action<PayloadType>> {
     sagaManager.take(actionName).then(this.successHandler).catchError(this.errorHandler);
   }
 }
+
+Runnable takeEverything([RunnableCallback<Action<Object>> success, RunnableCallback error]) {
+  return _TakeEverything(success, error);
+}
+
+class _TakeEverything extends RunnableFuture<Action<Object>> {
+  _TakeEverything(RunnableCallback<Action<Object>> success, RunnableCallback error) : super(success, error);
+
+  @override
+  void initHandler(SagaMiddlewareManager sagaManager) {
+    super.initHandler(sagaManager);
+    sagaManager.takeEverything().then(this.successHandler).catchError(this.errorHandler);
+  }
+}

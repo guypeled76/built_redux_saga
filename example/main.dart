@@ -34,7 +34,13 @@ main() async {
 }
 
 Iterable<Runnable> logSaga() sync* {
-
+  while (true) {
+    Action<String> action;
+    yield takeEverything((result) {
+      action = result;
+    });
+    print("log ${action}");
+  }
 }
 Iterable<Runnable> delaySaga() sync* {
   while (true) {
