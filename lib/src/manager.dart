@@ -43,8 +43,6 @@ ActionsType extends ReduxActions> {
   ActionHandler next(ActionHandler next) {
     return _handler = (Action<dynamic> action) {
 
-      print("sinked:${action}");
-
       _observable.sink.add(action);
 
       if (next != null) {
