@@ -7,7 +7,7 @@ Provides support for handling middleware effects using sagas.
 A simple usage example:
 
 ```dart
-import 'package:built_redux_saga/redux_saga.dart';
+import 'package:built_redux_saga/built_redux_saga.dart';
 import 'package:built_redux/built_redux.dart';
 import 'actions.dart';
 import 'state.dart';
@@ -128,8 +128,8 @@ Iterable<Runnable> test2() sync* {
   }
 
 
-  String state;
-  yield select("state", (result) {
+  AppState state;
+  yield select<AppState>((result) {
     state = result;
   });
   if(state == null) {
@@ -141,7 +141,6 @@ Iterable<Runnable> test2() sync* {
 Future<String> getSomething() {
   return Future.delayed(Duration(seconds: 2), () => "This is a delayed API response");
 }
-
 ```
 
 ## Features and bugs
