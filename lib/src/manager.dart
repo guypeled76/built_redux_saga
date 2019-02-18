@@ -4,6 +4,8 @@ import 'package:built_redux/built_redux.dart';
 import 'package:built_redux_saga/built_redux_saga.dart';
 import 'package:built_value/built_value.dart';
 
+
+
 class SagaMiddlewareManager<
 StateType extends Built<StateType, StateBuilderType>,
 StateBuilderType extends Builder<StateType, StateBuilderType>,
@@ -18,7 +20,7 @@ ActionsType extends ReduxActions> {
 
   ActionHandler _handler;
 
-  MiddlewareApi<StateType, StateBuilderType, ActionsType> _api;
+  Map<Type, Function> _registry = new Map();
 
   SagaMiddlewareManager(List<Iterable<Runnable>> runnableList)
       : _process = ProcessTask(Runnable.createTasksFromList(runnableList)) {
@@ -28,7 +30,8 @@ ActionsType extends ReduxActions> {
   void init(MiddlewareApi<StateType, StateBuilderType, ActionsType> api) {
     if(!_initialized) {
       _initialized = true;
-      this._api = api;
+      this.register<ActionsType>(() => api?.actions);
+      this.register<StateType>(() => api?.state);
       this._process.run(this);
     }
   }
@@ -58,11 +61,17 @@ ActionsType extends ReduxActions> {
     _handler(Action<PayloadType>(actionName.name, payload));
   }
 
+  void register<Type>(Function factory) {
+    _registry[Type.runtimeType] = factory;
+  }
+
   ResultType select<ResultType>() {
-    if(ResultType == StateType){
-      return this._api?.state as ResultType;
-    } else if(ResultType == ActionsType) {
-      return this._api?.actions as ResultType;
+    Function factory = this._registry[ResultType.runtimeType];
+    if(factory != null){
+      Object result = factory();
+      if(result is ResultType){
+        return result;
+      }
     }
 
     return null;
