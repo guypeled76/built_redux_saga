@@ -119,8 +119,8 @@ Iterable<Runnable> test2() sync* {
   }
 
 
-  String state;
-  yield select("state", (result) {
+  AppState state;
+  yield select<AppState>((result) {
     state = result;
   });
   if(state == null) {

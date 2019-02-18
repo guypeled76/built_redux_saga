@@ -58,9 +58,14 @@ ActionsType extends ReduxActions> {
     _handler(Action<PayloadType>(actionName.name, payload));
   }
 
-  ValueType select<SelectorType, ValueType>(SelectorType selector) {
-    print("selecting:${selector}");
-    return selector as ValueType;
+  ResultType select<ResultType>() {
+    if(ResultType == StateType){
+      return this._api?.state as ResultType;
+    } else if(ResultType == ActionsType) {
+      return this._api?.actions as ResultType;
+    }
+
+    return null;
   }
 
   Future<Action<Object>> takeEverything() async {
