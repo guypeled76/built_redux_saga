@@ -132,7 +132,7 @@ Iterable<Runnable> test2() sync* {
   yield select<AppState>((result) {
     state = result;
   });
-  if(state == null) {
+  if(state != null) {
     yield put(AppActionsNames.log, "state: ${state}");
   }
   print("exiting test2");
