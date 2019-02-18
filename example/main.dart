@@ -126,7 +126,16 @@ Iterable<Runnable> test2() sync* {
   if(state != null) {
     yield put(AppActionsNames.log, "state: ${state}");
   }
-  print("exiting test2");
+
+  AppActions actions;
+  yield select<AppActions>((result) {
+    actions = result;
+  });
+
+  if(actions != null) {
+    yield put(AppActionsNames.log, "action: ${actions}");
+  }
+  yield put(AppActionsNames.log, "exiting test2");
 }
 
 Future<String> getSomething() {

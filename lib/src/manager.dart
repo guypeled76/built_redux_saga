@@ -62,11 +62,11 @@ ActionsType extends ReduxActions> {
   }
 
   void register<Type>(Function factory) {
-    _registry[Type.runtimeType] = factory;
+    _registry[Type] = factory;
   }
 
   ResultType select<ResultType>() {
-    Function factory = this._registry[ResultType.runtimeType];
+    Function factory = this._registry[ResultType];
     if(factory != null){
       Object result = factory();
       if(result is ResultType){
