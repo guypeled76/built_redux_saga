@@ -10,8 +10,8 @@ environment:
 dependencies:
   built_collection: '>=2.0.0 <5.0.0'
   built_value: '>=5.5.5 <7.0.0'
-  built_redux: ^7.5.2
-    #git: https://github.com/guypeled76/built_redux
+  built_redux: # ^7.5.2
+    git: https://github.com/guypeled76/built_redux
 
 dev_dependencies:
   build_runner: ^1.0.0
