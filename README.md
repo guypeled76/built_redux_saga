@@ -1,6 +1,36 @@
 ## Built Redux Saga implementation. 
 
-Provides support for handling middleware effects using sagas.
+Provides support for handling middleware effects using sagas. 
+
+From Author:
+
+I am working on this library as of a flutter/angular dart project that I am working on.
+I created a common library that both the flutter project and the angular dart project is using, which
+is based on built redux for managing state and RxDart for propagating the state to the UI components 
+via BLoC pattern. When I got to writing the middleware I was not satisfied with the 
+readability and maintainability of the epics concept and I the built_redux_rx implementation 
+as the code was very bulky and did not gave the business logic an easy way to stand out.
+
+The concept of long lasting transactions that is saga for me is a better fit for managing the
+business logic part or in redux terms the middleware. Sagas are compose-able and really give the 
+business logic the ability to standout from a short glimpse. It is less bulky in my opinion
+than the epic middleware and more powerful than the thunk concept.
+
+I have tried to maintain compatibility with the redux-saga-js library but I am still in the 
+process of checking how it migrates to dart. JavaScript has a feature of expression yields which
+allows to yield the execution at the expression level and not only at the statement level.
+This is a very hard limitation on the dart side that forced me to use callbacks instead 
+of having simple effects that return results.
+
+The implementation is rather simple and I plan to simplify it even more as I go. 
+I will soon add documentations to the saga effects I have created.
+
+I have added a concept of saga registry which can be utilized using the select effect and the
+register effect. select allows you to select a registered entity like the State, and register allows you to
+register and entity by it's type. I have used it to provide quick access to platform specific 
+services in my flutter/angular project. I have a common service base types that are implemented
+differently by the flutter project and the angular dart project which are registered on the base types.
+That way the saga middle ware can work agnostic to the platform it is running on.
 
 ## Usage
 
