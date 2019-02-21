@@ -12,7 +12,7 @@ StateBuilderType extends Builder<StateType, StateBuilderType>,
 ActionsType extends ReduxActions> {
   final ProcessTask _process;
 
-  final StreamController<Object> _observable = new StreamController();
+  final StreamController<Object> _observable = new StreamController(sync: true);
 
   bool _initialized = false;
 
@@ -43,11 +43,13 @@ ActionsType extends ReduxActions> {
   ActionHandler next(ActionHandler next) {
     return _handler = (Action<dynamic> action) {
 
-      _observable.sink.add(action);
-
       if (next != null) {
         next(action);
       }
+
+      _observable.sink.add(action);
+
+
     };
   }
 
@@ -85,8 +87,12 @@ ActionsType extends ReduxActions> {
       ActionName<PayloadType> actionName) async {
     if (actionName != null) {
       return _actions
-          .where((action) => action is Action<PayloadType>)
-          .map((action) => action as Action<PayloadType>)
+          .where((action)  {
+            return action is Action<PayloadType>;
+          })
+          .map((action) {
+            return action as Action<PayloadType>;
+          })
           .where((action) => action.name == actionName.name)
           .first;
     }

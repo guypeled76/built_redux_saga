@@ -5,7 +5,7 @@ import 'package:built_value/built_value.dart';
 Middleware<StateType, StateBuilderType, ActionsType> createSagaMiddleware<
     StateType extends Built<StateType, StateBuilderType>,
     StateBuilderType extends Builder<StateType, StateBuilderType>,
-    ActionsType extends ReduxActions>(List<Iterable<Runnable>> runnableList, {String test}) {
+    ActionsType extends ReduxActions>(List<Iterable<Runnable>> runnableList) {
   SagaMiddlewareManager<StateType, StateBuilderType, ActionsType> manager = new SagaMiddlewareManager(runnableList);
   manager.run();
 
