@@ -26,10 +26,8 @@ void main() {
 
       Iterable<Runnable> jocker() sync* {
         while(true) {
-          Action<int> incAction;
-          yield take(AppActionsNames.increment, (result) {
-            incAction = result;
-          });
+
+          yield take(AppActionsNames.increment);
 
           yield put(AppActionsNames.increment, 1);
         }
