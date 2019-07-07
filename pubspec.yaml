@@ -1,6 +1,6 @@
 name: built_redux_saga
 description: Provides support for handling built_redux middleware using sagas.
-version: 1.0.10
+version: 1.0.11
 homepage: https://github.com/guypeled76
 author: Guy Peled <guypeled76@gmail.com>
 
