@@ -39,7 +39,7 @@ abstract class RunnableFuture<ValueType> extends Runnable {
       }
     }
 
-    _status = RunnableStatus.Failed;
+    _status = RunnableStatus.Done;
     if(_sagaManager != null) {
       _sagaManager.run();
     }

@@ -97,6 +97,13 @@ Iterable<Runnable> test1() sync* {
         value = result;
       }));
       yield put(AppActionsNames.log, "value: ${value}");
+
+      Result result = Result();
+      yield call(raiseError(), result);
+
+      if(result.hasError) {
+        yield put(AppActionsNames.log, "error: ${result.error}");
+      }
     } catch (e) {
       yield put(AppActionsNames.error, e);
     }
@@ -135,4 +142,10 @@ Iterable<Runnable> test2() sync* {
 
 Future<String> getSomething() {
   return Future.delayed(Duration(seconds: 2), () => "This is a delayed API response");
+}
+
+
+Future raiseError() async {
+  await Future.delayed(Duration(seconds: 2));
+  throw "this is an error.";
 }
