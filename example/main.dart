@@ -114,12 +114,12 @@ Iterable<Runnable> test2() sync* {
   }
 
 
-  AppState state;
-  yield select<AppState>(ResultHandler((result) {
-    state = result;
-  }));
-  if(state != null) {
-    yield put(AppActionsNames.log, "state: ${state}");
+  Result<AppState> result = Result();
+
+  yield select<AppState>(result);
+
+  if(result.value != null) {
+    yield put(AppActionsNames.log, "state: ${result.value}");
   }
 
   AppActions actions;
