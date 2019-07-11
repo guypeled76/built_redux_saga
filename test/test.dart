@@ -48,9 +48,9 @@ void main() {
         yield register("test");
 
         String value;
-        yield select<String>((result) {
+        yield select<String>(ResultHandler((result) {
           value = result;
-        });
+        }));
 
         if(value == "test") {
           yield put(AppActionsNames.increment, 10);

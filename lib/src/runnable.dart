@@ -11,7 +11,7 @@ abstract class Runnable {
 abstract class RunnableFuture<ValueType> extends Runnable {
 
   final RunnableCallback<ValueType> _success;
-  final RunnableCallback<ValueType> _error;
+  final RunnableCallback<Error> _error;
 
   RunnableStatus _status = RunnableStatus.Waiting;
   SagaMiddlewareManager _sagaManager;
@@ -31,9 +31,8 @@ abstract class RunnableFuture<ValueType> extends Runnable {
   void errorHandler(error) {
     if(this._error != null) {
       this._error(error);
-    } else {
-      throw new Exception(error);
     }
+
     _status = RunnableStatus.Failed;
     if(_sagaManager != null) {
       _sagaManager.run();

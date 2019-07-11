@@ -89,7 +89,7 @@
         <entry key="built_redux">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/git/built_redux-a7717f10f2c4e98bae26953374a058fd7a9599c8/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/built_redux-7.5.4/lib" />
             </list>
           </value>
         </entry>
@@ -523,7 +523,6 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file://$USER_HOME$/.pub-cache/git/built_redux-a7717f10f2c4e98bae26953374a058fd7a9599c8/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/analyzer-0.34.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/analyzer_plugin-0.0.1-alpha.6/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/args-1.5.1/lib" />
@@ -536,6 +535,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/build_runner-1.2.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/build_runner_core-2.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/built_collection-4.1.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/built_redux-7.5.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/built_value-6.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/built_value_generator-6.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/charcode-1.1.2/lib" />

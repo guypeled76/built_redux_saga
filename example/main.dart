@@ -35,20 +35,17 @@ main() async {
 
 Iterable<Runnable> logSaga() sync* {
   while (true) {
-    Action<String> action;
-    yield takeEverything((result) {
-      action = result;
-    });
-    print("log ${action}");
+    Result result = Result();
+    yield takeEverything(result);
+    print("log ${result.value}");
   }
 }
+
 Iterable<Runnable> delaySaga() sync* {
   while (true) {
-    Action<String> action;
-    yield take(AppActionsNames.test, (result) {
-      action = result;
-    });
-    print("taken ${action}");
+    Result<Action<String>> result = Result();
+    yield take(AppActionsNames.test, result);
+    print("taken ${result.value}");
 
     print("before delay test");
     yield delay(Duration(seconds: 1));
@@ -61,9 +58,9 @@ Iterable<Runnable> delaySaga() sync* {
 
 Iterable<Runnable> testSaga() sync* {
   Action<String> action;
-  yield take(AppActionsNames.test, (result) {
+  yield take(AppActionsNames.test, ResultHandler((result) {
     action = result;
-  });
+  }));
   print("in test taken ${action}");
   
   yield all([reportedSaga(test1(), "test1 task"), reportedSaga(test2(), "test2 task")]);
@@ -92,15 +89,15 @@ Iterable<Runnable> test1() sync* {
 
     try {
       Action<String> action;
-      yield take(AppActionsNames.test, (result) { 
+      yield take(AppActionsNames.test,ResultHandler((result) {
         action = result;
-      });
+      }));
       yield put(AppActionsNames.log, "dispatching: ${action}");
 
       String value;
-      yield call(getSomething(), (result) {
+      yield call(getSomething(), ResultHandler((result) {
         value = result;
-      });
+      }));
       yield put(AppActionsNames.log, "value: ${value}");
     } catch (e) {
       yield put(AppActionsNames.error, e);
@@ -120,17 +117,17 @@ Iterable<Runnable> test2() sync* {
 
 
   AppState state;
-  yield select<AppState>((result) {
+  yield select<AppState>(ResultHandler((result) {
     state = result;
-  });
+  }));
   if(state != null) {
     yield put(AppActionsNames.log, "state: ${state}");
   }
 
   AppActions actions;
-  yield select<AppActions>((result) {
+  yield select<AppActions>(ResultHandler((result) {
     actions = result;
-  });
+  }));
 
   if(actions != null) {
     yield put(AppActionsNames.log, "action: ${actions}");

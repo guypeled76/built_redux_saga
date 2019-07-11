@@ -12,6 +12,6 @@ class _Call<ValueType> extends RunnableFuture {
 
 
 
-Runnable call<ValueType>(Future<ValueType> future, [RunnableCallback<ValueType> callback, RunnableCallback error]) {
-  return _Call(future, callback, error);
+Runnable call<ValueType>(Future<ValueType> future, [Result<ValueType> result]) {
+  return _Call(future, result?.onSuccess, result?.onError);
 }

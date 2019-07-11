@@ -14,6 +14,6 @@ class _Select<ResultType> extends Runnable {
 
 }
 
-Runnable select<ResultType>(RunnableCallback<ResultType> callback) {
-  return _Select(callback);
+Runnable select<ResultType>(Result<ResultType> result) {
+  return _Select(result.onSuccess);
 }
