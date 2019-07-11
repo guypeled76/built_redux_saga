@@ -99,7 +99,7 @@ Iterable<Runnable> test1() sync* {
       yield put(AppActionsNames.log, "value: ${value}");
 
       Result result = Result();
-      yield call(raiseError(), result);
+      yield execute(raiseError(), result);
 
       if(result.hasError) {
         yield put(AppActionsNames.log, "error: ${result.error}");
