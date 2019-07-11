@@ -27,9 +27,12 @@ void main() {
       Iterable<Runnable> jocker() sync* {
         while(true) {
 
-          yield take(AppActionsNames.increment);
+          Result<Action<int>> result = Result();
+          yield take(AppActionsNames.increment, result);
 
           yield put(AppActionsNames.increment, 1);
+
+          yield take(AppActionsNames.increment);
         }
       }
 
@@ -47,12 +50,10 @@ void main() {
       Iterable<Runnable> registerSaga() sync* {
         yield register("test");
 
-        String value;
-        yield select<String>(ResultHandler((result) {
-          value = result;
-        }));
+        Result<String> result = Result();
+        yield select<String>(result);
 
-        if(value == "test") {
+        if(result.value == "test") {
           yield put(AppActionsNames.increment, 10);
         }
       }

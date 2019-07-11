@@ -57,11 +57,9 @@ Iterable<Runnable> delaySaga() sync* {
 
 
 Iterable<Runnable> testSaga() sync* {
-  Action<String> action;
-  yield take(AppActionsNames.test, ResultHandler((result) {
-    action = result;
-  }));
-  print("in test taken ${action}");
+  Result<Action<String>> result = Result();
+  yield take(AppActionsNames.test, result);
+  print("in test taken ${result.value}");
   
   yield all([reportedSaga(test1(), "test1 task"), reportedSaga(test2(), "test2 task")]);
   

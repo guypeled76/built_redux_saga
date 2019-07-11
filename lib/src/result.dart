@@ -41,7 +41,7 @@ class ResultHandler<ValueType> extends Result<ValueType> {
   @override
   void onSuccess(ValueType value) {
     super.onSuccess(value);
-    if(this.errorHandler!= null) {
+    if(this.successHandler!= null) {
       this.successHandler(value);
     }
   }
