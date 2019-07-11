@@ -13,6 +13,12 @@ class Result<ValueType> {
   get hasError => _error != null;
   get hasValue => _value != null;
 
+  void throwErrorIfExists() {
+    if(this.hasError) {
+      throw this.error;
+    }
+  }
+
   void onError(RunnableError error) {
     _error = error;
   }
