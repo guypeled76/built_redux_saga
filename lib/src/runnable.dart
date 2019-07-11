@@ -11,12 +11,14 @@ abstract class Runnable {
 abstract class RunnableFuture<ValueType> extends Runnable {
 
   final RunnableCallback<ValueType> _success;
-  final RunnableCallback<Error> _error;
+  final RunnableErrorHandler _error;
 
   RunnableStatus _status = RunnableStatus.Waiting;
   SagaMiddlewareManager _sagaManager;
 
   RunnableFuture(this._success, this._error);
+  
+  get errorMessage;
 
   void successHandler(ValueType value) {
     if(this._success != null) {
@@ -28,9 +30,13 @@ abstract class RunnableFuture<ValueType> extends Runnable {
     }
   }
 
-  void errorHandler(error) {
+  void errorHandler(error, stacktrace) {
     if(this._error != null) {
-      this._error(error);
+      try {
+        this._error(RunnableError(this.errorMessage, error, stacktrace));
+      } catch(e) {
+        _sagaManager.fatalError(e);
+      }
     }
 
     _status = RunnableStatus.Failed;
@@ -62,3 +68,5 @@ enum RunnableStatus {
 }
 
 typedef void RunnableCallback<ValueType>(ValueType value);
+
+typedef void RunnableErrorHandler(RunnableError error);

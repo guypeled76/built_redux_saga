@@ -9,13 +9,16 @@ Runnable take<PayloadType>(ActionName<PayloadType> actionName, [Result<Action<Pa
 
 class _Take<PayloadType> extends RunnableFuture<Action<PayloadType>> {
   final ActionName<PayloadType> actionName;
-  _Take(this.actionName, RunnableCallback<Action<PayloadType>> success, RunnableCallback<Error> error) : super(success, error);
+  _Take(this.actionName, RunnableCallback<Action<PayloadType>> success, Function error) : super(success, error);
 
   @override
   void initHandler(SagaMiddlewareManager sagaManager) {
     super.initHandler(sagaManager);
     sagaManager.take(actionName).then(this.successHandler).catchError(this.errorHandler);
   }
+
+  @override
+  get errorMessage => "Failed to execute take transaction.";
 }
 
 Runnable takeEverything([Result result]) {
@@ -24,11 +27,14 @@ Runnable takeEverything([Result result]) {
 
 
 class _TakeEverything extends RunnableFuture<Action<Object>> {
-  _TakeEverything(RunnableCallback<Action<Object>> success, RunnableCallback<Error> error) : super(success, error);
+  _TakeEverything(RunnableCallback<Action<Object>> success, Function error) : super(success, error);
 
   @override
   void initHandler(SagaMiddlewareManager sagaManager) {
     super.initHandler(sagaManager);
     sagaManager.takeEverything().then(this.successHandler).catchError(this.errorHandler);
   }
+
+  @override
+  get errorMessage => "Failed to execute take everything transaction.";
 }

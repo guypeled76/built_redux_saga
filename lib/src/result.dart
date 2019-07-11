@@ -5,15 +5,15 @@ class Result<ValueType> {
   
   
   ValueType _value;
-  
-  Error _error;
+
+  RunnableError _error;
   
   get error => _error;
   get value => _value;
   get hasError => _error != null;
   
 
-  void onError(Error error) {
+  void onError(RunnableError error) {
     _error = error;
   }
 
@@ -26,12 +26,12 @@ class ResultHandler<ValueType> extends Result<ValueType> {
 
   final RunnableCallback<ValueType> successHandler;
   
-  final RunnableCallback<Error> errorHandler;
+  final RunnableErrorHandler errorHandler;
   
   ResultHandler(this.successHandler,[this.errorHandler]);
   
   @override
-  void onError(Error error) {
+  void onError(RunnableError error) {
     super.onError(error);
     if(this.errorHandler != null) {
       this.errorHandler(error);

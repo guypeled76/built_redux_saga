@@ -98,4 +98,8 @@ ActionsType extends ReduxActions> {
     }
     return null;
   }
+
+  void fatalError(e) {
+
+  }
 }
