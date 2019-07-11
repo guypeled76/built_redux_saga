@@ -86,21 +86,16 @@ Iterable<Runnable> test1() sync* {
   print("entering test1");
 
     try {
-      Action<String> action;
-      yield take(AppActionsNames.test,ResultHandler((result) {
-        action = result;
-      }));
-      yield put(AppActionsNames.log, "dispatching: ${action}");
+      Result<Action<String>> action;
+      yield take(AppActionsNames.test,action);
+      yield put(AppActionsNames.log, "dispatching: ${action.value}");
 
-      String value;
-      yield call(getSomething(), ResultHandler((result) {
-        value = result;
-      }));
-      yield put(AppActionsNames.log, "value: ${value}");
+      Result<String> something = Result();
+      yield call(getSomething(), something);
+      yield put(AppActionsNames.log, "value: ${something.value}");
 
       Result result = Result();
       yield call(raiseError(), result);
-
       if(result.hasError) {
         yield put(AppActionsNames.log, "error: ${result.error}");
       }
