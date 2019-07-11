@@ -75,19 +75,17 @@ main() async {
 Iterable<Runnable> logSaga() sync* {
   while (true) {
     Action<String> action;
-    yield takeEverything((result) {
+    yield takeEverything(ResultHandler((result) {
       action = result;
-    });
+    }));
     print("log ${action}");
   }
 }
 Iterable<Runnable> delaySaga() sync* {
   while (true) {
-    Action<String> action;
-    yield take(AppActionsNames.test, (result) {
-      action = result;
-    });
-    print("taken ${action}");
+    Result<String> result = Result();
+    yield take(AppActionsNames.test, result);
+    print("taken ${result.value}");
 
     print("before delay test");
     yield delay(Duration(seconds: 1));
@@ -99,11 +97,9 @@ Iterable<Runnable> delaySaga() sync* {
 
 
 Iterable<Runnable> testSaga() sync* {
-  Action<String> action;
-  yield take(AppActionsNames.test, (result) {
-    action = result;
-  });
-  print("in test taken ${action}");
+  Result<Action<String>> result = Result();
+  yield take(AppActionsNames.test, result);
+  print("in test taken ${result.value}");
   
   yield all([reportedSaga(test1(), "test1 task"), reportedSaga(test2(), "test2 task")]);
   
@@ -131,15 +127,17 @@ Iterable<Runnable> test1() sync* {
 
     try {
       Action<String> action;
-      yield take(AppActionsNames.test, (result) { 
+      yield take(AppActionsNames.test, ResultHandler((result) { 
         action = result;
-      });
+      }));
       yield put(AppActionsNames.log, "dispatching: ${action}");
 
       String value;
-      yield call(getSomething(), (result) {
+      yield call(getSomething(), ResultHandler((result) {
         value = result;
-      });
+      }, (error) {
+        // handle error
+      }));
       yield put(AppActionsNames.log, "value: ${value}");
     } catch (e) {
       yield put(AppActionsNames.error, e);
@@ -159,9 +157,9 @@ Iterable<Runnable> test2() sync* {
 
 
   AppState state;
-  yield select<AppState>((result) {
+  yield select<AppState>(ResultHandler((result) {
     state = result;
-  });
+  }));
   if(state != null) {
     yield put(AppActionsNames.log, "state: ${state}");
   }
