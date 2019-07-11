@@ -3,8 +3,17 @@ import 'package:built_redux_saga/built_redux_saga.dart';
 class _Call<ValueType> extends RunnableFuture {
   final Future<ValueType> _future;
 
-  _Call(this._future, [RunnableCallback<ValueType> _success, RunnableErrorHandler _error]) : super(_success, _error){
-    this._future.then(this.successHandler).catchError(this.errorHandler);
+  _Call(this._future, [RunnableCallback<ValueType> _success, RunnableErrorHandler _error]) : super(_success, _error) {
+
+  }
+
+  void _bind() async {
+      try {
+        ValueType value = await this._future;
+        this.successHandler(value);
+      } catch(e) {
+        this.errorHandler(e);
+      }
   }
 
   @override
@@ -14,5 +23,7 @@ class _Call<ValueType> extends RunnableFuture {
 
 
 Runnable call<ValueType>(Future<ValueType> future, [Result<ValueType> result]) {
-  return _Call(future, result?.onSuccess, result?.onError);
+  _Call runnable = _Call(future, result?.onSuccess, result?.onError);
+  runnable._bind();
+  return runnable;
 }

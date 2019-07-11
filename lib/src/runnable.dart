@@ -30,10 +30,10 @@ abstract class RunnableFuture<ValueType> extends Runnable {
     }
   }
 
-  void errorHandler(error, stacktrace) {
+  void errorHandler(error) {
     if(this._error != null) {
       try {
-        this._error(RunnableError(this.errorMessage, error, stacktrace));
+        this._error(RunnableError(this.errorMessage, error, null));
       } catch(e) {
         _sagaManager.fatalError(e);
       }
