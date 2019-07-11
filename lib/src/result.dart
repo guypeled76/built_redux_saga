@@ -11,7 +11,7 @@ class Result<ValueType> {
   get error => _error;
   get value => _value;
   get hasError => _error != null;
-  
+  get hasValue => _value != null;
 
   void onError(RunnableError error) {
     _error = error;
