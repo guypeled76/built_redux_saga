@@ -86,7 +86,7 @@ Iterable<Runnable> test1() sync* {
   print("entering test1");
 
     try {
-      Result<Action<String>> action;
+      Result<Action<String>> action = Result();
       yield take(AppActionsNames.test,action);
       yield put(AppActionsNames.log, "dispatching: ${action.value}");
 
